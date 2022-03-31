@@ -3,8 +3,13 @@ import {
   PutItemCommand,
   QueryCommand,
 } from "@aws-sdk/client-dynamodb";
-import { nanoid } from 'nanoid';
-import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
+import { nanoid } from "nanoid";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 import { APIGatewayProxyHandler } from "aws-lambda";
 
 let { TABLE_USERS } = process.env;
@@ -17,7 +22,9 @@ let handler: APIGatewayProxyHandler = async (event, context) => {
   try {
     let user = {
       id: nanoid(),
-      name: uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }),
+      name: uniqueNamesGenerator({
+        dictionaries: [adjectives, colors, animals],
+      }),
     };
     let commandPutItem = new PutItemCommand({
       TableName: TABLE_USERS,
@@ -46,7 +53,7 @@ let handler: APIGatewayProxyHandler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ ok: true, payload: data.Items }),
     };
@@ -55,7 +62,7 @@ let handler: APIGatewayProxyHandler = async (event, context) => {
     return {
       statusCode: 400,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ ok: false, error: message }),
     };
